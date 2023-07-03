@@ -1,63 +1,44 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Laravel CQRS
 
-## About Laravel
+Laravel CQRS (Command Query Responsibility Segregation) is a software architecture used in web application development with the Laravel framework. CQRS separates the responsibility between executing commands (changing the system state) and performing queries (retrieving data from the system).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+In the CQRS architecture, commands and queries are two different types of operations and are handled by separate components. A command represents a request to change the system state, such as creating, updating, or deleting data. A query represents a request to retrieve data from the system without modifying its state.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Laravel CQRS applies the principles of CQRS to Laravel application development. It helps to separate the logic for handling commands and queries, providing clarity and manageability to the source code. By dividing responsibilities, Laravel CQRS can optimize performance and facilitate scalability in your application.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+In Laravel CQRS, you will find the following key components:
 
-## Learning Laravel
+1. Commands: Representing operations that change the system state.
+2. Command Handlers: Responsible for processing the logic to execute commands and change the system state accordingly.
+3. Queries: Representing operations that retrieve data from the system.
+4. Query Handlers: Responsible for processing the logic to handle queries and return the corresponding results.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel CQRS enables you to separate the processing logic and facilitates easy scalability during the development of your Laravel application, particularly when dealing with complex requirements and high loads..
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Command
 
-## Laravel Sponsors
+run the following command: php artisan cqrs:run {--command=} {--query=} {--handleCommand=} {--handleQuery}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. php artisan cqrs:run --command=CreateUserCommand
+2. php artisan cqrs:run --query=GetUsersQuery   
+3. php artisan cqrs:run --handleCommand=CreateUserHandler
+4. php artisan cqrs:run --handleQuery=GetUsersHandler
 
-### Premium Partners
+## Laravel provider map Bus
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+in file CQRSProvider.php
 
-## Contributing
+public function boot()
+{
+    // bind command
+    Bus::map([
+        CreateUserCommand::class => CreateUserHandler::class,
+        GetUsersQuery::class => GetUsersHandler::class,
+    ]);
+}
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+=> when creating command, query and handle, map it together
 
 ## License
 
