@@ -29,6 +29,8 @@ run the following command: php artisan cqrs:run {--command=} {--query=} {--handl
 
 in file CQRSProvider.php
 
+```php
+<?php
 public function boot()
 {
     // bind command
@@ -37,6 +39,7 @@ public function boot()
         GetUsersQuery::class => GetUsersHandler::class,
     ]);
 }
+?>
 
 => when creating command, query and handle, map it together
 
